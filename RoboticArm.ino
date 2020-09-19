@@ -5,18 +5,22 @@
 #define SERVOPIN_2 7 // Hinge Servo
 #define SERVOPIN_3 11 // Arm Servo
 
-#define JOYSTICK_LEFT_X A0
-#define JOYSTICK_MID_X A1
-#define JOYSTICK_RIGHT_X A2
+#define JOYSTICK_1_X A0
+#define JOYSTICK_1_Y A1
+#define JOYSTICK_2_X A2
+#define JOYSTICK_3_X A3
 
 
-#define JOYSTICK_THRESH 150
+#define JOYSTICK_UP_THRESH 20
+#define JOYSTICK_DOWN_THRESH 200
 
 Servo servo1;
 Servo servo2;
 Servo servo3;
+Servo servo4;
 
-
+int joyStickValues[4];
+int servoPos[4];
 
 
 // Function to move servo forward
@@ -32,6 +36,10 @@ void moveServo (int servoNum, int angle) {
   }
   else if(servoNum == 3) {
     servo3.write(angle);
+    delay(15);
+  }
+  else if(servoNum == 4) {
+    servo4.write(angle);
     delay(15);
   }
   else if(servoNum == 0) {
@@ -70,19 +78,34 @@ void testCase1() {
   delay(4000);
 }
  
-int getJoystickValue(int joyStickNumber) {
+void getJoystickValues() {
   // returns joystick position
-  return analogRead(joyStickNumber);
+  joyStickValues[0] = analogRead(JOYSTICK_1_X);
+  joyStickValues[1] = analogRead(JOYSTICK_1_Y);
+  joyStickValues[2] = analogRead(JOYSTICK_2_X);
+  joyStickValues[3] = analogRead(JOYSTICK_3_X);
+  
 }
 
+void printJsValues() {
+  for (int i=0; i<4; i++) {
+    Serial.print("JoyStick "+(i+1));
+    Serial.println(joyStickValues[i]);
+  }
+}
 
+void decodeJsValues() {
+  
+}
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
   servo1.attach(SERVOPIN_1);
   servo2.attach(SERVOPIN_2);
   servo3.attach(SERVOPIN_3);
-
+  getJoystickValues();
+  printJsValues();
 }
 
 void loop() {
