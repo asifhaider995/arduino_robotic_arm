@@ -110,5 +110,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  testCase1();
+  moveServo(1,90);
+  moveServo(2,90);
 }
